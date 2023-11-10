@@ -73,5 +73,5 @@ Plugins/*/Intermediate/*
 # Cache files for the editor to use
 DerivedDataCache/*
 
-Content\MetaHumans\Common\Face\Face_Archetype.uasset
-Content\MetaHumans\Viejo\Face\Viejo_FaceMesh.uasset
+Content/MetaHumans/Common/Face/Face_Archetype.uasset
+Content/MetaHumans/Viejo/Face/Viejo_FaceMesh.uasset
