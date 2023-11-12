@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
-	"Version": 3,
-	"VersionName": "0.3",
+	"Version": 4,
+	"VersionName": "0.4",
 	"FriendlyName": "Luma AI Plugin",
 	"Description": "A plugin for rendering and interfacing with neural fields from Luma AI.",
 	"Category": "Luma AI",
@@ -30,6 +30,12 @@
 			"Name": "LumaEditor",
 			"Type": "Editor",
 			"LoadingPhase": "Default"
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "Niagara",
+			"Enabled": true
 		}
 	]
 }

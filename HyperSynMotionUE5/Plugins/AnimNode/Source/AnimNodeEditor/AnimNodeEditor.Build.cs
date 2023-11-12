@@ -1,18 +1,14 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 using UnrealBuildTool;
 
-public class LumaRuntime: ModuleRules
+public class AnimNodeEditor : ModuleRules
 {
-	public LumaRuntime(ReadOnlyTargetRules Target) : base(Target)
+	public AnimNodeEditor(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
-        CppStandard = CppStandardVersion.Cpp17;
-        bUsePrecompiled = true;
-        PrecompileForTargets = PrecompileTargetsType.Any;
-
-        PublicIncludePaths.AddRange(
+		
+		PublicIncludePaths.AddRange(
 			new string[] {
+				"AnimNodeEditor/Public"
 				// ... add public include paths required here ...
 			}
 			);
@@ -20,6 +16,7 @@ public class LumaRuntime: ModuleRules
 		
 		PrivateIncludePaths.AddRange(
 			new string[] {
+				"AnimNodeEditor/Private",
 				// ... add other private include paths required here ...
 			}
 			);
@@ -28,16 +25,14 @@ public class LumaRuntime: ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-                "Core",
-                "RenderCore",
-                "Engine",
-                "RHI",
-                "AssetRegistry",
-				"HeadMountedDisplay",
-				"InputCore"
+				"Core",
+                "AnimGraph",                
+                "AnimGraphRuntime",
+                "BlueprintGraph",
+                "AnimNode"
 				// ... add other public dependencies that you statically link with here ...
 			}
-            );
+			);
 			
 		
 		PrivateDependencyModuleNames.AddRange(
@@ -46,11 +41,18 @@ public class LumaRuntime: ModuleRules
 				"CoreUObject",
 				"Engine",
 				"Slate",
-                "SlateCore",
-                "UMG",
+				"SlateCore",
+                "UnrealEd",
+                "GraphEditor",
+                "PropertyEditor",
+                "EditorStyle",
+                "ContentBrowser",
+                "AnimNode",
+                "AnimGraph",
+                "AnimGraphRuntime",
 				// ... add private dependencies that you statically link with here ...	
 			}
-            );
+			);
 		
 		
 		DynamicallyLoadedModuleNames.AddRange(

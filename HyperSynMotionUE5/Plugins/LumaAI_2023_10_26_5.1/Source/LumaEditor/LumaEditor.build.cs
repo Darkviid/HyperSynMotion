@@ -9,7 +9,7 @@ public class LumaEditor : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 		bUsePrecompiled = true;
-		PrecompileForTargets = PrecompileTargetsType.Any;
+		//PrecompileForTargets = PrecompileTargetsType.Any;
 
 		AddEngineThirdPartyPrivateStaticDependencies(Target, "zlib");
 
@@ -36,7 +36,8 @@ public class LumaEditor : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore", 
-				"LumaRuntime",
+				"LumaRuntime", 
+				"Niagara",
 			}
 		);
 	}
