@@ -45,6 +45,15 @@
 		{
 			"Name": "HairStrands",
 			"Enabled": true
+		},
+		{
+			"Name": "LumaAIPlugin",
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Mac",
+				"Linux"
+			]
 		}
 	]
 }

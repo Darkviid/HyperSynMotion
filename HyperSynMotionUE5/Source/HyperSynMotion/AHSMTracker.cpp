@@ -518,7 +518,7 @@ void AHSMTracker::TakeScreenshot(EHSMViewMode vm)
 
 void AHSMTracker::TakeScreenshotFolder(EHSMViewMode vm, FString CameraName)
 {
-	FString screenshot_filename = screenshots_save_directory + screenshots_folder + "/" + json_file_names[CurrentJsonFile] + "/" + ViewmodeString(vm) + "/" + CameraName + "/"; // +ROXJsonParser::IntToStringDigits(numFrame, 6); UE4
+	FString screenshot_filename = screenshots_save_directory + screenshots_folder + "/" + json_file_names[CurrentJsonFile] + "/" + ViewmodeString(vm) + "/" + CameraName + "/" +HSMJsonParser::IntToStringDigits(numFrame, 6);
 	if (vm != EHSMViewMode::RVM_Depth)
 	{
 		HighResSshot(GetWorld()->GetGameViewport(), screenshot_filename, vm);
@@ -846,21 +846,21 @@ void AHSMTracker::RebuildModeBegin()
 	FString sceneObject_json_filename = screenshots_save_directory + screenshots_folder + "/" + json_file_names[CurrentJsonFile] + "/sceneObject.json";
 	//FROXObjectPainter::Get().PrintToJson(sceneObject_json_filename); UE4
 
-	//JsonParser = new ROXJsonParser(); UE4
-	//JsonParser->LoadFile(scene_save_directory + scene_folder + "/" + json_file_names[CurrentJsonFile] + ".json"); UE4
-	//CacheSceneActors(JsonParser->GetPawnNames(), JsonParser->GetCameraNames());	UE4
+	JsonParser = new HSMJsonParser(); 
+	JsonParser->LoadFile(scene_save_directory + scene_folder + "/" + json_file_names[CurrentJsonFile] + ".json");
+	CacheSceneActors(JsonParser->GetPawnNames(), JsonParser->GetCameraNames());
 	DisableGravity();
 
-	/*if (JsonParser->GetNumFrames() > 0)
+	if (JsonParser->GetNumFrames() > 0)
 	{
 		FTimerHandle TimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, FTimerDelegate::CreateUObject(this, &AHSMTracker::RebuildModeMain), initial_delay, false);
-	} UE4*/ 
+	} 
 }
 
 void AHSMTracker::RebuildModeMain()
 {
-	/*if (numFrame < JsonParser->GetNumFrames()) UE4
+	if (numFrame < JsonParser->GetNumFrames())
 	{
 		int64 currentTime = FDateTime::Now().ToUnixTimestamp();
 		PrintStatusToLog(start_frames[CurrentJsonFile], JsonReadStartTime, LastFrameTime, numFrame, currentTime, JsonParser->GetNumFrames());
@@ -871,7 +871,7 @@ void AHSMTracker::RebuildModeMain()
 		// Rebuild StaticMesh Actors
 		for (AStaticMeshActor* sm : CachedSM)
 		{
-			FROXActorStateExtended* ObjState = currentFrame.Objects.Find(sm->GetName());
+			FHSMActorStateExtended* ObjState = currentFrame.Objects.Find(sm->GetName());
 			if (ObjState != nullptr)
 			{
 				sm->SetActorLocationAndRotation(ObjState->Position, ObjState->Rotation);
@@ -880,10 +880,10 @@ void AHSMTracker::RebuildModeMain()
 
 		// Rebuild Pawns
 		TMap<FName, FTransform> NameTransformMap;
-		for (AROXBasePawn* sk : Pawns)
+		for (APawn* sk : Pawns)
 		{
 			FString skName = sk->GetActorLabel();
-			FROXSkeletonState* SkState = currentFrame.Skeletons.Find(skName);
+			FHSMSkeletonState* SkState = currentFrame.Skeletons.Find(skName);
 			if (SkState != nullptr)
 			{
 				TArray<FString> BoneNames;
@@ -891,12 +891,12 @@ void AHSMTracker::RebuildModeMain()
 
 				for (FString BoneName : BoneNames)
 				{
-					FROXActorState* BoneState = SkState->Bones.Find(BoneName);
+					FHSMActorState* BoneState = SkState->Bones.Find(BoneName);
 					if (BoneState != nullptr)
 					{
 						FTransform BoneTransform = FTransform(BoneState->Rotation, BoneState->Position);
-						sk->EmplaceBoneTransformMap(FName(*BoneName), BoneTransform);
-						NameTransformMap = sk->GetNameTransformMap();
+						//sk->EmplaceBoneTransformMap(FName(*BoneName), BoneTransform); UE4
+						//NameTransformMap = sk->GetNameTransformMap(); UE4
 					}
 				}
 			}
@@ -917,7 +917,7 @@ void AHSMTracker::RebuildModeMain()
 			RestoreGravity();
 		}
 	}
-	*/
+	
 	int a = 0;
 }
 
@@ -926,11 +926,11 @@ void AHSMTracker::RebuildModeMain_Camera()
 	// Rebuild Cameras
 	for (ACameraActor* cam : CameraActors)
 	{
-		/*FROXActorState* CamState = currentFrame.Cameras.Find(cam->GetName()); UE4
+		FHSMActorState* CamState = currentFrame.Cameras.Find(cam->GetName());
 		if (CamState != nullptr)
 		{
 			cam->SetActorLocationAndRotation(CamState->Position, CamState->Rotation);
-		}*/
+		}
 	}
 
 	++numFrame;
@@ -949,18 +949,18 @@ FString SecondsToString(int timeSec)
 	return FString(FString::FromInt(timeHrs) + "h " + FString::FromInt(minutes) + "min " + FString::FromInt(seconds) + "sec");
 }
 
-void AHSMTracker::PrintStatusToLog(int startFrame, int64 startTimeSec, int64 lastFrameTimeSec, int currentFrame, int64 currentTimeSec, int totalFrames)
+void AHSMTracker::PrintStatusToLog(int startFrame, int64 startTimeSec, int64 lastFrameTimeSec, int currentFrameInt, int64 currentTimeSec, int totalFrames)
 {
-	int nDoneFrames = currentFrame - startFrame;
+	int nDoneFrames = currentFrameInt - startFrame;
 
 	if (frame_status_output_period > 0 && nDoneFrames != 0 && (nDoneFrames % frame_status_output_period == 0.0f || nDoneFrames == 2 || nDoneFrames == frame_status_output_period / 10 || nDoneFrames == frame_status_output_period / 2))
 	{
 		int totalFramesForRebuild = totalFrames - startFrame;
 		int elapsedTimeSec = (int)(currentTimeSec - startTimeSec);
-		int remainingTimeSec = (elapsedTimeSec / nDoneFrames) * (totalFrames - currentFrame);
+		int remainingTimeSec = (elapsedTimeSec / nDoneFrames) * (totalFrames - currentFrameInt);
 		int lastFrameElapsedTimeSec = (int)(currentTimeSec - lastFrameTimeSec);
 
-		FString status_msg("Frame " + FString::FromInt(nDoneFrames) + " / " + FString::FromInt(totalFramesForRebuild) + " (" + FString::FromInt(currentFrame) + "/" + FString::FromInt(totalFrames) + ")");
+		FString status_msg("Frame " + FString::FromInt(nDoneFrames) + " / " + FString::FromInt(totalFramesForRebuild) + " (" + FString::FromInt(currentFrameInt) + "/" + FString::FromInt(totalFrames) + ")");
 		status_msg += " - Estimated Remaining Time: " + SecondsToString(remainingTimeSec) + " - Last Frame Time: " + FString::FromInt(lastFrameElapsedTimeSec) + "sec - Total Elapsed Time: " + SecondsToString(elapsedTimeSec);
 
 		UE_LOG(LogTemp, Warning, TEXT("%s"), *status_msg);

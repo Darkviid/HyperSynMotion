@@ -8,7 +8,7 @@
 #include "Camera/CameraActor.h"
 #include "ImageUtils.h"
 //#include "ROXBasePawn.h"
-//#include "ROXJsonParser.h"
+#include "HSMJsonParser.h"
 #include "IImageWrapper.h"
 #include "IImageWrapperModule.h"
 //#include "SharedPointer.h"
@@ -172,8 +172,8 @@ protected:
 
 	APawn* ControllerPawn;
 
-	//ROXJsonParser* JsonParser;
-	//FROXFrame currentFrame;
+	HSMJsonParser* JsonParser;
+	FHSMFrame currentFrame;
 
 private:
 	/* Complete name for raw TXT files */
@@ -230,7 +230,7 @@ public:
 	void RebuildModeBegin();
 	void RebuildModeMain();
 	void RebuildModeMain_Camera();
-	void PrintStatusToLog(int startFrame, int64 startTimeSec, int64 lastFrameTimeSec, int currentFrame, int64 currentTimeSec, int totalFrames);
+	void PrintStatusToLog(int startFrame, int64 startTimeSec, int64 lastFrameTimeSec, int currentFrameInt, int64 currentTimeSec, int totalFrames);
 
 	UFUNCTION(CallInEditor, BlueprintCallable, Category="JSON Management")
 	void GenerateSequenceJson();
