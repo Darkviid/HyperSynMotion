@@ -1,0 +1,616 @@
+{
+  "SceneObjects": [
+    {
+      "instance_name": "BP_Sky_Sphere",
+      "instance_color": {
+        "r": 0,
+        "g": 0,
+        "b": 255
+      },
+      "class": "none"
+    },
+    {
+      "instance_name": "Piso_24",
+      "instance_color": {
+        "r": 0,
+        "g": 255,
+        "b": 0
+      },
+      "class": "floor"
+    },
+    {
+      "instance_name": "Rodape_26",
+      "instance_color": {
+        "r": 0,
+        "g": 255,
+        "b": 255
+      },
+      "class": "wall"
+    },
+    {
+      "instance_name": "Teto_28",
+      "instance_color": {
+        "r": 255,
+        "g": 0,
+        "b": 0
+      },
+      "class": "ceiling"
+    },
+    {
+      "instance_name": "walls_Parede_32",
+      "instance_color": {
+        "r": 255,
+        "g": 0,
+        "b": 255
+      },
+      "class": "wall"
+    },
+    {
+      "instance_name": "walls_Parede0_34",
+      "instance_color": {
+        "r": 255,
+        "g": 255,
+        "b": 0
+      },
+      "class": "wall"
+    },
+    {
+      "instance_name": "walls_Parede2_36",
+      "instance_color": {
+        "r": 255,
+        "g": 255,
+        "b": 255
+      },
+      "class": "wall"
+    },
+    {
+      "instance_name": "Piso_59",
+      "instance_color": {
+        "r": 0,
+        "g": 0,
+        "b": 126
+      },
+      "class": "floor"
+    },
+    {
+      "instance_name": "Rodape_61",
+      "instance_color": {
+        "r": 0,
+        "g": 255,
+        "b": 126
+      },
+      "class": "wall"
+    },
+    {
+      "instance_name": "Teto_61",
+      "instance_color": {
+        "r": 255,
+        "g": 0,
+        "b": 126
+      },
+      "class": "ceiling"
+    },
+    {
+      "instance_name": "walls_Object002_65",
+      "instance_color": {
+        "r": 255,
+        "g": 255,
+        "b": 126
+      },
+      "class": "wall"
+    },
+    {
+      "instance_name": "walls_Parede_67",
+      "instance_color": {
+        "r": 0,
+        "g": 126,
+        "b": 0
+      },
+      "class": "wall"
+    },
+    {
+      "instance_name": "walls_Parede1_69",
+      "instance_color": {
+        "r": 0,
+        "g": 126,
+        "b": 255
+      },
+      "class": "wall"
+    },
+    {
+      "instance_name": "walls_Parede3_71",
+      "instance_color": {
+        "r": 255,
+        "g": 126,
+        "b": 0
+      },
+      "class": "wall"
+    },
+    {
+      "instance_name": "Piso_94",
+      "instance_color": {
+        "r": 255,
+        "g": 126,
+        "b": 255
+      },
+      "class": "floor"
+    },
+    {
+      "instance_name": "Teto_98",
+      "instance_color": {
+        "r": 0,
+        "g": 126,
+        "b": 126
+      },
+      "class": "ceiling"
+    },
+    {
+      "instance_name": "Wall1_100",
+      "instance_color": {
+        "r": 255,
+        "g": 126,
+        "b": 126
+      },
+      "class": "wall"
+    },
+    {
+      "instance_name": "Wall2_102",
+      "instance_color": {
+        "r": 126,
+        "g": 0,
+        "b": 0
+      },
+      "class": "wall"
+    },
+    {
+      "instance_name": "Wall3_104",
+      "instance_color": {
+        "r": 126,
+        "g": 0,
+        "b": 255
+      },
+      "class": "wall"
+    },
+    {
+      "instance_name": "Wall4_106",
+      "instance_color": {
+        "r": 126,
+        "g": 255,
+        "b": 0
+      },
+      "class": "wall"
+    },
+    {
+      "instance_name": "hamb_chair_109",
+      "instance_color": {
+        "r": 126,
+        "g": 255,
+        "b": 255
+      },
+      "class": "chair"
+    },
+    {
+      "instance_name": "Esquadria_113",
+      "instance_color": {
+        "r": 126,
+        "g": 0,
+        "b": 126
+      },
+      "class": "curtain"
+    },
+    {
+      "instance_name": "Luminaria_Chao_Luminaria_Chao_116",
+      "instance_color": {
+        "r": 126,
+        "g": 255,
+        "b": 126
+      },
+      "class": "lamp"
+    },
+    {
+      "instance_name": "Vitra_119",
+      "instance_color": {
+        "r": 126,
+        "g": 126,
+        "b": 0
+      },
+      "class": "chair"
+    },
+    {
+      "instance_name": "Vitra_2",
+      "instance_color": {
+        "r": 126,
+        "g": 126,
+        "b": 255
+      },
+      "class": "chair"
+    },
+    {
+      "instance_name": "Esquadria_2",
+      "instance_color": {
+        "r": 126,
+        "g": 126,
+        "b": 126
+      },
+      "class": "curtain"
+    },
+    {
+      "instance_name": "Esquadria_4",
+      "instance_color": {
+        "r": 0,
+        "g": 0,
+        "b": 61
+      },
+      "class": "curtain"
+    },
+    {
+      "instance_name": "Esquadria_3",
+      "instance_color": {
+        "r": 0,
+        "g": 255,
+        "b": 61
+      },
+      "class": "curtain"
+    },
+    {
+      "instance_name": "Esquadria_6",
+      "instance_color": {
+        "r": 0,
+        "g": 126,
+        "b": 61
+      },
+      "class": "curtain"
+    },
+    {
+      "instance_name": "Esquadria_5",
+      "instance_color": {
+        "r": 255,
+        "g": 0,
+        "b": 61
+      },
+      "class": "curtain"
+    },
+    {
+      "instance_name": "Esquadria_129",
+      "instance_color": {
+        "r": 255,
+        "g": 255,
+        "b": 61
+      },
+      "class": "curtain"
+    },
+    {
+      "instance_name": "Mesa_132",
+      "instance_color": {
+        "r": 255,
+        "g": 126,
+        "b": 61
+      },
+      "class": "table"
+    },
+    {
+      "instance_name": "Cadeira_Eames_Cadeira_Eames_137",
+      "instance_color": {
+        "r": 126,
+        "g": 0,
+        "b": 61
+      },
+      "class": "chair"
+    },
+    {
+      "instance_name": "Piso2_148",
+      "instance_color": {
+        "r": 126,
+        "g": 255,
+        "b": 61
+      },
+      "class": "floor"
+    },
+    {
+      "instance_name": "Hamb_Sofa_151",
+      "instance_color": {
+        "r": 126,
+        "g": 126,
+        "b": 61
+      },
+      "class": "sofa"
+    },
+    {
+      "instance_name": "Luminaria_Hamburg_154",
+      "instance_color": {
+        "r": 0,
+        "g": 61,
+        "b": 0
+      },
+      "class": "lamp"
+    },
+    {
+      "instance_name": "Chair_Tolix_4",
+      "instance_color": {
+        "r": 0,
+        "g": 61,
+        "b": 255
+      },
+      "class": "chair"
+    },
+    {
+      "instance_name": "Chair_Tolix_2",
+      "instance_color": {
+        "r": 0,
+        "g": 61,
+        "b": 126
+      },
+      "class": "chair"
+    },
+    {
+      "instance_name": "Moka_Chaleira_Moka_10",
+      "instance_color": {
+        "r": 255,
+        "g": 61,
+        "b": 0
+      },
+      "class": "kitchen_stuff"
+    },
+    {
+      "instance_name": "mesa_centro1_13",
+      "instance_color": {
+        "r": 255,
+        "g": 61,
+        "b": 255
+      },
+      "class": "table"
+    },
+    {
+      "instance_name": "Protetor_20",
+      "instance_color": {
+        "r": 255,
+        "g": 61,
+        "b": 126
+      },
+      "class": "furniture"
+    },
+    {
+      "instance_name": "Protetor_2",
+      "instance_color": {
+        "r": 126,
+        "g": 61,
+        "b": 0
+      },
+      "class": "furniture"
+    },
+    {
+      "instance_name": "Protetor_3",
+      "instance_color": {
+        "r": 126,
+        "g": 61,
+        "b": 255
+      },
+      "class": "furniture"
+    },
+    {
+      "instance_name": "Protetor_4",
+      "instance_color": {
+        "r": 126,
+        "g": 61,
+        "b": 126
+      },
+      "class": "furniture"
+    },
+    {
+      "instance_name": "rodape5_58",
+      "instance_color": {
+        "r": 0,
+        "g": 61,
+        "b": 61
+      },
+      "class": "wall"
+    },
+    {
+      "instance_name": "Eames_Wood_4",
+      "instance_color": {
+        "r": 255,
+        "g": 61,
+        "b": 61
+      },
+      "class": "chair"
+    },
+    {
+      "instance_name": "Eames_Wood_2",
+      "instance_color": {
+        "r": 126,
+        "g": 61,
+        "b": 61
+      },
+      "class": "chair"
+    },
+    {
+      "instance_name": "Philipe_Starck_2",
+      "instance_color": {
+        "r": 61,
+        "g": 0,
+        "b": 0
+      },
+      "class": "chair"
+    },
+    {
+      "instance_name": "Philipe_Starck_3",
+      "instance_color": {
+        "r": 61,
+        "g": 0,
+        "b": 255
+      },
+      "class": "chair"
+    },
+    {
+      "instance_name": "Banco_01_19",
+      "instance_color": {
+        "r": 61,
+        "g": 0,
+        "b": 126
+      },
+      "class": "chair"
+    },
+    {
+      "instance_name": "Light01_25",
+      "instance_color": {
+        "r": 61,
+        "g": 255,
+        "b": 0
+      },
+      "class": "lamp"
+    },
+    {
+      "instance_name": "Door_28",
+      "instance_color": {
+        "r": 61,
+        "g": 255,
+        "b": 255
+      },
+      "class": "door"
+    },
+    {
+      "instance_name": "Door_31",
+      "instance_color": {
+        "r": 61,
+        "g": 255,
+        "b": 126
+      },
+      "class": "door"
+    },
+    {
+      "instance_name": "mesa_centro3_34",
+      "instance_color": {
+        "r": 61,
+        "g": 126,
+        "b": 0
+      },
+      "class": "table"
+    },
+    {
+      "instance_name": "Magazine_37",
+      "instance_color": {
+        "r": 61,
+        "g": 126,
+        "b": 255
+      },
+      "class": "book"
+    },
+    {
+      "instance_name": "Mesa_Centro_43",
+      "instance_color": {
+        "r": 61,
+        "g": 126,
+        "b": 126
+      },
+      "class": "table"
+    },
+    {
+      "instance_name": "Vase_Rounded_46",
+      "instance_color": {
+        "r": 61,
+        "g": 0,
+        "b": 61
+      },
+      "class": "bottle"
+    },
+    {
+      "instance_name": "Banco_2",
+      "instance_color": {
+        "r": 61,
+        "g": 255,
+        "b": 61
+      },
+      "class": "chair"
+    },
+    {
+      "instance_name": "Luminaria_Chao_Curva_57",
+      "instance_color": {
+        "r": 61,
+        "g": 126,
+        "b": 61
+      },
+      "class": "lamp"
+    },
+    {
+      "instance_name": "Footnote_2",
+      "instance_color": {
+        "r": 61,
+        "g": 61,
+        "b": 0
+      },
+      "class": "wall"
+    },
+    {
+      "instance_name": "MainRoomCamera",
+      "instance_color": {
+        "r": 61,
+        "g": 61,
+        "b": 255
+      },
+      "class": "none"
+    },
+    {
+      "instance_name": "SecondaryRoomCamera",
+      "instance_color": {
+        "r": 61,
+        "g": 61,
+        "b": 126
+      },
+      "class": "none"
+    },
+    {
+      "instance_name": "FirstPersonCamera",
+      "instance_color": {
+        "r": 61,
+        "g": 61,
+        "b": 61
+      },
+      "class": "none"
+    },
+    {
+      "instance_name": "DEC_living_book_2",
+      "instance_color": {
+        "r": 0,
+        "g": 0,
+        "b": 190
+      },
+      "class": "book"
+    },
+    {
+      "instance_name": "DEC_living_book_6",
+      "instance_color": {
+        "r": 0,
+        "g": 255,
+        "b": 190
+      },
+      "class": "book"
+    },
+    {
+      "instance_name": "RightHandCamera",
+      "instance_color": {
+        "r": 0,
+        "g": 126,
+        "b": 190
+      },
+      "class": "none"
+    },
+    {
+      "instance_name": "LeftHandCamera",
+      "instance_color": {
+        "r": 0,
+        "g": 61,
+        "b": 190
+      },
+      "class": "none"
+    },
+    {
+      "instance_name": "CameraActor_0",
+      "instance_color": {
+        "r": 255,
+        "g": 255,
+        "b": 190
+      },
+      "class": "none"
+    }
+  ]
+}

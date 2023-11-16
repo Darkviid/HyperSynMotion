@@ -264,7 +264,7 @@ void HSMJsonParser::SceneTxtToJson(FString path, FString txt_filename, FString j
 		txt_file_lines[startLine_NonMovable].ParseIntoArray(line_numNonMovable, TEXT(" "));
 		int numNonMovable = FCString::Atoi(*line_numNonMovable[1]);
 
-		for (int i = startLine_NonMovable + 1; i < startLine_NonMovable + numNonMovable + 1; ++i)
+		/*for (int i = startLine_NonMovable + 1; i < startLine_NonMovable + numNonMovable + 1; ++i)
 		{
 			TArray<FString> line_nm;
 			txt_file_lines[i].ParseIntoArray(line_nm, TEXT(" "));
@@ -276,7 +276,7 @@ void HSMJsonParser::SceneTxtToJson(FString path, FString txt_filename, FString j
 			Json_NonMovableObject->SetObjectField("boundingbox_min", JsonObjectXYZ(FloatTxt(line_nm[7]), FloatTxt(line_nm[8]), FloatTxt(line_nm[9])));
 			Json_NonMovableObject->SetObjectField("boundingbox_max", JsonObjectXYZ(FloatTxt(line_nm[10]), FloatTxt(line_nm[11]), FloatTxt(line_nm[12])));
 			JsonArray_SequenceNonMovable.Add(MakeShareable(new FJsonValueObject(Json_NonMovableObject)));
-		}
+		}*/
 
 		// Get Frame		
 		TArray<TSharedPtr<FJsonValue>> JsonArray_SequenceFrames;

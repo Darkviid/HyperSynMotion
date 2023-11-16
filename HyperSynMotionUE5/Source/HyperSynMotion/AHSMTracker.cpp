@@ -334,7 +334,7 @@ void AHSMTracker::WriteScene()
 void AHSMTracker::GenerateSequenceJson()
 {
 	FString path = scene_save_directory + scene_folder;
-	//XJsonParser::SceneTxtToJson(path, input_scene_TXT_file_name, output_scene_json_file_name); UE4
+	HSMJsonParser::SceneTxtToJson(path, input_scene_TXT_file_name, output_scene_json_file_name);
 }
 
 void AHSMTracker::ToggleRecording()
