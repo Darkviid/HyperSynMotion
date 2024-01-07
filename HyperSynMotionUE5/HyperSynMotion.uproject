@@ -62,10 +62,6 @@
 			"SupportedTargetPlatforms": [
 				"Win64"
 			]
-		},
-		{
-			"Name": "XV3dGS",
-			"Enabled": true
 		}
 	]
 }

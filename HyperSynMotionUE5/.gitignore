@@ -76,3 +76,7 @@ DerivedDataCache/*
 
 Content/MetaHumans/Common/Face/Face_Archetype.uasset
 Content/MetaHumans/Viejo/Face/Viejo_FaceMesh.uasset
+Content/MetaHumans/elderly_woman_1/Face/elderly_woman_1_FaceMesh.uasset
+Content/MetaHumans/elderly_man_2/Face/elderly_man_2_FaceMesh.uasset
+Content/MetaHumans/elderly_man_1/Face/elderly_man_1_FaceMesh.uasset
+Content/MetaHumans/elderly_woman_2/Face/elderly_woman_2_FaceMesh.uasset

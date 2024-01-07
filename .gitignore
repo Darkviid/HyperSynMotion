@@ -75,3 +75,13 @@ DerivedDataCache/*
 
 HyperSynMotionUE5/Content/MetaHumans/Common/Face/Face_Archetype.uasset
 HyperSynMotionUE5/Content/MetaHumans/Viejo/Face/Viejo_FaceMesh.uasset
+HyperSynMotionUE5/Content/MetaHumans/elderly_woman_1/Face/elderly_woman_1_FaceMesh.uasset
+HyperSynMotionUE5/Content/MetaHumans/elderly_man_2/Face/elderly_man_2_FaceMesh.uasset
+HyperSynMotionUE5/Content/MetaHumans/elderly_man_1/Face/elderly_man_1_FaceMesh.uasset
+HyperSynMotionUE5/Content/MetaHumans/elderly_woman_2/Face/elderly_woman_2_FaceMesh.uasset
+
+#PLY scene files
+HyperSynMotionUE5/PLY_Scenes/*
+
+# Dataset videos
+HyperSynMotionUE5/Screenshots/*

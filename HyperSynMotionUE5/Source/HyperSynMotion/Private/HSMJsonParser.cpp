@@ -31,12 +31,15 @@ bool HSMJsonParser::LoadFile(FString JsonFilePath)
 		{
 			NumFrames = JsonObject->GetIntegerField("total_frames");
 			SequenceName = JsonObject->GetStringField("name");
-			TotalTime = JsonObject->GetNumberField("total_time");
-			MeanFramerate = JsonObject->GetNumberField("mean_framerate");
+			//TotalTime = JsonObject->GetNumberField("total_time");
+			//MeanFramerate = JsonObject->GetNumberField("mean_framerate");
 
 			CamerasJsonArray = JsonObject->GetArrayField("cameras");
 			PawnsJsonArray = JsonObject->GetArrayField("skeletons");
-			FramesJsonArray = JsonObject->GetArrayField("frames");
+			auto AnimationsJsonArray = JsonObject->GetArrayField("animations");
+			//FramesJsonArray = JsonObject->GetArrayField("frames");
+
+
 
 			TSharedPtr<FJsonObject> CurrentCameraObject;
 			for (int32 i = 0; i < CamerasJsonArray.Num(); ++i)
@@ -51,6 +54,15 @@ bool HSMJsonParser::LoadFile(FString JsonFilePath)
 				CurrentPawnObject = PawnsJsonArray[i]->AsObject();
 				PawnNames.Add(CurrentPawnObject->GetStringField("name"));
 			}
+
+			TSharedPtr<FJsonObject> CurrentAnimationObject;
+			for (int32 i = 0; i < AnimationsJsonArray.Num(); ++i)
+			{
+				CurrentAnimationObject = AnimationsJsonArray[i]->AsObject();
+				AnimationNames.Add(CurrentAnimationObject->GetStringField("name"));
+			}
+
+
 		}
 		else
 		{
@@ -412,4 +424,64 @@ void HSMJsonParser::SceneTxtToJson(FString path, FString txt_filename, FString j
 		FString error_message("Scene TXT file named " + txt_filename + ".txt does not exist.");
 		UE_LOG(LogTemp, Warning, TEXT("%s"), *error_message);
 	}
+}
+
+
+FHSMSkeletonState HSMJsonParser::GetSkeletonState(FString name) const{
+
+	FHSMSkeletonState skeletonState;
+	//set the skeletonState to the default values
+	skeletonState.Position = FVector(0, 0, 0);
+	skeletonState.Rotation = FRotator(0, 0, 0);
+
+	// Find in PawnsJsonArray the skeleton with the given name
+	// If found , fill the skeletonState with the data from the json object and return it, otherwise return an empty skeletonState
+	TSharedPtr<FJsonObject> CurrentPawnObject;
+
+	for (int32 i = 0; i < PawnsJsonArray.Num(); ++i)
+	{
+		CurrentPawnObject = PawnsJsonArray[i]->AsObject();
+		if (CurrentPawnObject->GetStringField("name") == name){
+
+			skeletonState.Position = FVector(CurrentPawnObject->GetObjectField("position")->GetNumberField("x"), CurrentPawnObject->GetObjectField("position")->GetNumberField("y"), CurrentPawnObject->GetObjectField("position")->GetNumberField("z"));
+			skeletonState.Rotation = FRotator(CurrentPawnObject->GetObjectField("rotation")->GetNumberField("p"), CurrentPawnObject->GetObjectField("rotation")->GetNumberField("y"), CurrentPawnObject->GetObjectField("rotation")->GetNumberField("r"));
+
+			break;
+
+		}
+	}
+
+	return skeletonState;
+
+}
+
+FHSMCameraState HSMJsonParser::GetCameraState(FString name) const {
+
+	FHSMCameraState cameraState;
+
+	//set the skeletonState to the default values
+	cameraState.Position = FVector(0, 0, 0);
+	cameraState.Rotation = FRotator(0, 0, 0);
+
+	// Find in CamerasJsonArray the camera with the given name
+	// If found , fill the cameraState with the data from the json object and return it, otherwise return an empty cameraState
+	TSharedPtr<FJsonObject> CurrentCameraObject;
+
+	for (int32 i = 0; i < CamerasJsonArray.Num(); ++i)
+	{
+		CurrentCameraObject = CamerasJsonArray[i]->AsObject();
+		if (CurrentCameraObject->GetStringField("name") == name)
+		{
+			cameraState.Position = FVector(CurrentCameraObject->GetObjectField("position")->GetNumberField("x"), CurrentCameraObject->GetObjectField("position")->GetNumberField("y"), CurrentCameraObject->GetObjectField("position")->GetNumberField("z"));
+			cameraState.Rotation = FRotator(CurrentCameraObject->GetObjectField("rotation")->GetNumberField("p"), CurrentCameraObject->GetObjectField("rotation")->GetNumberField("y"), CurrentCameraObject->GetObjectField("rotation")->GetNumberField("r"));
+			cameraState.fov = CurrentCameraObject->GetNumberField("fov");
+			cameraState.stereo = CurrentCameraObject->GetIntegerField("stereo");
+
+			break;
+
+		}
+	}
+
+	return cameraState;
+
 }

@@ -86,6 +86,10 @@ protected:
 	/* List of start rebuild frames for the corresponding sequence from the previous sequence list */
 	UPROPERTY(EditAnywhere, Category = Playback)
 	TArray<int> start_frames;
+	/* Frames per second of animation */
+	UPROPERTY(EditAnywhere, Category = Playback)
+	int fps_anim;
+
 
 	/* If checked, RGB images (JPG RGB 8bit) will be generated for each frame of rebuilt sequences */
 	UPROPERTY(EditAnywhere, Category = Playback)
@@ -174,6 +178,8 @@ protected:
 
 	HSMJsonParser* JsonParser;
 	FHSMFrame currentFrame;
+	USkeletalMeshComponent* pawnMesh;
+	float animLength;
 
 private:
 	/* Complete name for raw TXT files */

@@ -47,6 +47,21 @@ struct FHSMSkeletonState
 };
 
 USTRUCT()
+struct FHSMCameraState
+{
+	GENERATED_USTRUCT_BODY()
+
+	int stereo;
+	float fov;
+	FVector Position;
+	FRotator Rotation;
+
+
+	FHSMCameraState()
+	{}
+};
+
+USTRUCT()
 struct FHSMFrame
 {
 	GENERATED_USTRUCT_BODY()
@@ -106,6 +121,16 @@ public:
 		return PawnNames;
 	}
 
+	FORCEINLINE TArray<FString> GetAnimationNames() const
+	{
+		return AnimationNames;
+	}
+
+	FHSMSkeletonState GetSkeletonState(FString name) const;
+	FHSMCameraState GetCameraState(FString name) const;
+	
+
+
 protected:
 	uint64 NumFrames;
 	FString SequenceName;
@@ -114,6 +139,7 @@ protected:
 
 	TArray<FString> PawnNames;
 	TArray<FString> CameraNames;
+	TArray<FString> AnimationNames;
 	TArray<TSharedPtr<FJsonValue>> CamerasJsonArray;
 	TArray<TSharedPtr<FJsonValue>> FramesJsonArray;
 	TArray<TSharedPtr<FJsonValue>> PawnsJsonArray;

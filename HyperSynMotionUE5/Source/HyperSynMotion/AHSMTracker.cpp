@@ -17,7 +17,7 @@
 // Sets default values
 AHSMTracker::AHSMTracker() :
 bIsRecording(false),
-bRecordMode(true),
+bRecordMode(false),
 bStandaloneMode(false),
 Persistence_Level_Filter_Str("UEDPIE_0"),
 bDebugMode(false),
@@ -33,6 +33,7 @@ input_scene_TXT_file_name("scene"),
 output_scene_json_file_name("scene"),
 generate_rgb(true),
 format_rgb(EHSMRGBImageFormats::RIF_JPG95),
+fps_anim(30.0f),
 generate_depth(true),
 generate_object_mask(true),
 generate_normal(true),
@@ -519,7 +520,7 @@ void AHSMTracker::TakeScreenshot(EHSMViewMode vm)
 void AHSMTracker::TakeScreenshotFolder(EHSMViewMode vm, FString CameraName)
 {
 	FString screenshot_filename = screenshots_save_directory + screenshots_folder + "/" + json_file_names[CurrentJsonFile] + "/" + ViewmodeString(vm) + "/" + CameraName + "/" +HSMJsonParser::IntToStringDigits(numFrame, 6);
-	if (vm != EHSMViewMode::RVM_Depth)
+	if (true || vm != EHSMViewMode::RVM_Depth)
 	{
 		HighResSshot(GetWorld()->GetGameViewport(), screenshot_filename, vm);
 	}
@@ -614,24 +615,41 @@ void AHSMTracker::TakeDepthScreenshotFolder(const FString& FullFilename)
 				}
 			}
 
+			//UE print allocated size and size
+			UE_LOG(LogTemp, Warning, TEXT("Grayscaleuint16Data allocated size: %d"), Grayscaleuint16Data.GetAllocatedSize());
+			UE_LOG(LogTemp, Warning, TEXT("Grayscaleuint16Data size: %d"), Grayscaleuint16Data.Num());
+			
 			// Save Png Monochannel 16bits
 			static IImageWrapperModule& ImageWrapperModule = FModuleManager::LoadModuleChecked<IImageWrapperModule>(FName("ImageWrapper"));
 			static TSharedPtr<IImageWrapper> ImageWrapper = ImageWrapperModule.CreateImageWrapper(EImageFormat::PNG);
-			ImageWrapper->SetRaw(Grayscaleuint16Data.GetData(), Grayscaleuint16Data.GetAllocatedSize(), Width, Height, ERGBFormat::Gray, 16);
 
-			//const TArray<uint8>& ImgGrayData = ImageWrapper->GetCompressed(); 
-			//The above line is not working, 'inicializando': no se puede realizar la conversión de 'const TArray<uint8,FDefaultAllocator64>' a 'const TArray<uint8,FDefaultAllocator> &'
-			//So, we have to do this: apply conversion from 'const TArray<uint8,FDefaultAllocator64>' to 'const TArray<uint8,FDefaultAllocator> &
-			TArray<uint8> ImgGrayData;
-
-			for (uint8 i = 0; i < ImageWrapper->GetCompressed().Num(); i++)
+			int32 bytesPerRow = Width * 2;
+		
+			ImageWrapper->SetRaw(Grayscaleuint16Data.GetData(), Grayscaleuint16Data.Num()*2, Width, Height, ERGBFormat::Gray, 16, bytesPerRow);
+			//Check if the image wrapper is valid
+			if (!ImageWrapper.IsValid())
 			{
-				ImgGrayData.Add(ImageWrapper->GetCompressed()[i]);
+				UE_LOG(LogTemp, Warning, TEXT("ImageWrapper is not valid"));
+				return;
 			}
 
+			const TArray64<uint8>& ImgGrayData = ImageWrapper->GetCompressed(100);
+
+			//Convert TArray64<uint8> to TArray<uint8>
+			const TArray<uint8>& ImgGrayData2 = (const TArray<uint8>&)ImgGrayData;
+			
+			//The above line is not working, 'inicializando': no se puede realizar la conversión de 'const TArray<uint8,FDefaultAllocator64>' a 'const TArray<uint8,FDefaultAllocator> &'
+			//So, we have to do this: apply conversion from 'const TArray<uint8,FDefaultAllocator64>' to 'const TArray<uint8,FDefaultAllocator> &
+			//TArray<uint8> ImgGrayData;
+
+			//for (uint8 i = 0; i < ImageWrapper->GetCompressed().Num(); i++)
+			//{
+			//	ImgGrayData.Add(ImageWrapper->GetCompressed()[i]);
+			//}
 
 
-			(new FAutoDeleteAsyncTask<FScreenshotTask>(ImgGrayData, FullFilename + ".png"))->StartBackgroundTask();
+
+			(new FAutoDeleteAsyncTask<FScreenshotTask>(ImgGrayData2, FullFilename + ".png"))->StartBackgroundTask();
 		}
 
 		if (generate_depth_txt_cm)
@@ -789,13 +807,14 @@ void AHSMTracker::ChangeViewmodeDelegate(EHSMViewMode vm)
 {
 	if (vm == EHSMViewMode_First)
 	{
-		/*for (APawn* p : Pawns)
-		{
-			p->CheckFirstPersonCamera(CameraActors[CurrentCamRebuildMode]);
-		}
-		ControllerPawn->ChangeViewTarget(CameraActors[CurrentCamRebuildMode]);
-		SceneCapture_depth->SetActorLocationAndRotation(CameraActors[CurrentCamRebuildMode]->GetActorLocation(), CameraActors[CurrentCamRebuildMode]->GetActorRotation());
-		UE4 */
+	 //Get player controller and set view target to the first camera from ControllerPawn and CameraActors[CurrentCamRebuildMode]
+	 auto playerController = GetWorld()->GetFirstPlayerController();
+	 //check that player controller is valid
+	 if (playerController) {
+		 playerController->SetViewTarget(CameraActors[CurrentCamRebuildMode]);
+	 }
+
+	   //SceneCapture_depth->SetActorLocationAndRotation(CameraActors[CurrentCamRebuildMode]->GetActorLocation(), CameraActors[CurrentCamRebuildMode]->GetActorRotation());UE4 */
 	}
 	ChangeViewmode(vm);
 
@@ -848,8 +867,74 @@ void AHSMTracker::RebuildModeBegin()
 
 	JsonParser = new HSMJsonParser(); 
 	JsonParser->LoadFile(scene_save_directory + scene_folder + "/" + json_file_names[CurrentJsonFile] + ".json");
-	CacheSceneActors(JsonParser->GetPawnNames(), JsonParser->GetCameraNames());
+	//CacheSceneActors(JsonParser->GetPawnNames(), JsonParser->GetCameraNames());
 	DisableGravity();
+
+
+	// Initialize Pawns in scene
+	for (APawn* sk : Pawns){
+		FString skName = sk->GetActorLabel();
+		FHSMSkeletonState SkState = JsonParser->GetSkeletonState(skName);
+		// check if SkState has valid values of position and rotation variables
+		if (SkState.Position != FVector::ZeroVector && SkState.Rotation != FRotator::ZeroRotator)
+		{
+			sk->SetActorLocationAndRotation(SkState.Position, SkState.Rotation);
+			//Set visibility of the pawn to true
+			sk->SetActorHiddenInGame(false);
+
+			//Get animation from the jsonparser
+			FString animationName = JsonParser->GetAnimationNames()[0];
+			//Get the animationn object from the game with the name animationName
+			UAnimSequence* anim = Cast<UAnimSequence>(StaticLoadObject(UAnimSequence::StaticClass(), NULL, *(animationName)));
+			//Check if the animation is valid
+			if (anim != nullptr) {
+				//Set the skeletal mesh component (CharacterMesh0) of the pawn to play the animation
+				UActorComponent* animMesh = sk->GetComponentByClass(USkeletalMeshComponent::StaticClass());
+				//Check if the animation mesh is valid
+				if (animMesh != nullptr) {
+					pawnMesh = Cast<USkeletalMeshComponent>(animMesh);
+					if (pawnMesh != nullptr) {
+						//pawnMesh->SetAnimationMode(EAnimationMode::AnimationSingleNode);
+						pawnMesh->SetAnimation(anim);
+						//Get size of anim
+						animLength = anim->GetPlayLength();
+						//pawnMesh->PlayAnimation(anim, false);
+						pawnMesh->Play(false);
+						//pawnMesh->PlayAnimation(anim, false);
+						pawnMesh->bPauseAnims = true;
+						//Set frame 0 of the animation
+						pawnMesh->GlobalAnimRateScale = 0.0f;
+						pawnMesh->SetPlayRate(0.0f);
+						//pawnMesh->SetPosition(1.0f, false);
+						//print pawnMesh->GetPosition()
+						//UE_LOG(LogTemp, Warning, TEXT("Position of pawnMesh: %f"), pawnMesh->GetPosition());
+					}
+
+				}
+			}
+
+			
+
+		}else{
+			sk->SetActorHiddenInGame(true);
+		}
+
+
+	}
+
+	// Initialize Cameras in scene
+	for (ACameraActor* cam : CameraActors){
+		FString camName = cam->GetActorLabel();
+		FHSMCameraState CamState = JsonParser->GetCameraState(camName);
+		// check if CamState has valid values of position and rotation variables
+		if (CamState.Position != FVector::ZeroVector && CamState.Rotation != FRotator::ZeroRotator)
+		{
+			cam->SetActorLocationAndRotation(CamState.Position, CamState.Rotation);
+			//Set fov of the camera
+			cam->GetCameraComponent()->FieldOfView = CamState.fov;
+		}
+	
+	}
 
 	if (JsonParser->GetNumFrames() > 0)
 	{
@@ -860,46 +945,34 @@ void AHSMTracker::RebuildModeBegin()
 
 void AHSMTracker::RebuildModeMain()
 {
-	if (numFrame < JsonParser->GetNumFrames())
-	{
+	if (numFrame < JsonParser->GetNumFrames() && animLength > numFrame / fps_anim){
 		int64 currentTime = FDateTime::Now().ToUnixTimestamp();
 		PrintStatusToLog(start_frames[CurrentJsonFile], JsonReadStartTime, LastFrameTime, numFrame, currentTime, JsonParser->GetNumFrames());
 		LastFrameTime = currentTime;
 
-		currentFrame = JsonParser->GetFrameData(numFrame);
+		//currentFrame = JsonParser->GetFrameData(numFrame);
 
-		// Rebuild StaticMesh Actors
-		for (AStaticMeshActor* sm : CachedSM)
-		{
-			FHSMActorStateExtended* ObjState = currentFrame.Objects.Find(sm->GetName());
-			if (ObjState != nullptr)
-			{
-				sm->SetActorLocationAndRotation(ObjState->Position, ObjState->Rotation);
-			}
+		if (pawnMesh != nullptr) {
+			//Check size of the animation of pawnMesh
+			//Set initial position of frame numFrame of the animation taking into account the fps_anim and refresh the mesh
+			//pawnMesh->SetUpdateAnimationInEditor(true);
+			float framePos = (float)numFrame / fps_anim;
+			pawnMesh->SetPosition(framePos, false);
+			//pawnMesh->RefreshBoneTransforms();
+			// print pawnMesh->GetPosition()
+			//UE_LOG(LogTemp, Warning, TEXT("Position of pawnMesh: %f"), pawnMesh->GetPosition());
+			//To solve problems about no updates of the animation in the editor
+			//pawnMesh->TickAnimation(0.0f, false);
+			//pawnMesh->TickPose(0.0f, false);
 		}
 
-		// Rebuild Pawns
+
+		// Rebuild Pawns animation
 		TMap<FName, FTransform> NameTransformMap;
 		for (APawn* sk : Pawns)
 		{
 			FString skName = sk->GetActorLabel();
-			FHSMSkeletonState* SkState = currentFrame.Skeletons.Find(skName);
-			if (SkState != nullptr)
-			{
-				TArray<FString> BoneNames;
-				SkState->Bones.GetKeys(BoneNames);
 
-				for (FString BoneName : BoneNames)
-				{
-					FHSMActorState* BoneState = SkState->Bones.Find(BoneName);
-					if (BoneState != nullptr)
-					{
-						FTransform BoneTransform = FTransform(BoneState->Rotation, BoneState->Position);
-						//sk->EmplaceBoneTransformMap(FName(*BoneName), BoneTransform); UE4
-						//NameTransformMap = sk->GetNameTransformMap(); UE4
-					}
-				}
-			}
 		}
 
 		FTimerHandle TimerHandle;
@@ -924,14 +997,14 @@ void AHSMTracker::RebuildModeMain()
 void AHSMTracker::RebuildModeMain_Camera()
 {
 	// Rebuild Cameras
-	for (ACameraActor* cam : CameraActors)
+	/*for (ACameraActor* cam : CameraActors)
 	{
 		FHSMActorState* CamState = currentFrame.Cameras.Find(cam->GetName());
 		if (CamState != nullptr)
 		{
 			cam->SetActorLocationAndRotation(CamState->Position, CamState->Rotation);
 		}
-	}
+	}*/
 
 	++numFrame;
 	CurrentCamRebuildMode = 0;

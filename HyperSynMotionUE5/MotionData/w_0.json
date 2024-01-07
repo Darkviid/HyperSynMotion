@@ -1,0 +1,81 @@
+{
+	"name": "Anim Woman 1",
+	"total_frames": 120,
+	"animations": [
+		{"name":"/Script/Engine.AnimSequence'/Game/Motion/511_An_elderly_person_experiencing_dizziness_and_loss_of_balance__and_falls_down_to_the_ground.511_An_elderly_person_experiencing_dizziness_and_loss_of_balance__and_falls_down_to_the_ground'"}	
+	],
+	"cameras": [
+		{
+			"name": "Camera1",
+			"stereo": 0,
+			"fov": 90,
+			"position":
+				{
+					"x": 610.071367,
+					"y": 12,
+					"z": 110
+				},
+			"rotation":
+				{
+					"r": -4.167486,
+					"p": -44,
+					"y": -80
+					
+				}
+		},
+		{
+			"name": "Camera2",
+			"stereo": 0,
+			"fov": 90,
+			"position":
+				{
+					"x": 753.958784,
+					"y": -346.975756,
+					"z": 300.988346
+				},
+			"rotation":
+				{
+					"r": 58.119366,
+					"p": -59.090398,
+					"y": 110.932057
+					
+				}
+		},
+		{
+			"name": "Camera3",
+			"stereo": 0,
+			"fov": 90,
+			"position":
+				{
+					"x": 516,
+					"y": 42,
+					"z": 60
+				},
+			"rotation":
+				{
+					"r": -2.792253,
+					"p": -23,
+					"y": -55.6
+				
+				}
+		}
+	],
+	"skeletons": [
+		{
+			"name": "BP_SLFMMetaHuman_woman_1",
+			"num_bones": 24,
+			"position":
+			{
+				"x": 641.665832,
+				"y": -319.638674,
+				"z": 0
+			},
+			"rotation":
+			{
+				"r": 0,
+				"p": 0,
+				"y": 100
+			}
+		}
+	]
+}
